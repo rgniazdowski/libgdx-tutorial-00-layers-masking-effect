@@ -50,7 +50,7 @@ public class MyGdxLayersMaskingEffect extends ApplicationAdapter implements Inpu
 
     //-------------------------------------------------------------------------
 
-    public static final int NUM_LAYER_EFFECTS = 10;
+    public static final int NUM_LAYER_EFFECTS = 7;
 
     protected AssetManager assetManager;
     LayerMaskingEffectDrawer layersDrawer;
@@ -513,7 +513,7 @@ public class MyGdxLayersMaskingEffect extends ApplicationAdapter implements Inpu
                 layerInfo.rotation = 0.0f;
             } // [7] bottom left small triangle
             {
-                for(int i =0;i<layerEffects[6].count();i++) {
+                for (int i = 0; i < layerEffects[6].count(); i++) {
                     LayerInfo layerInfo = layerEffects[6].get(i);
                     layerInfo.shouldPulse = false;
                     layerInfo.speed = 0.0f;
@@ -563,46 +563,54 @@ public class MyGdxLayersMaskingEffect extends ApplicationAdapter implements Inpu
 
         if (isKeyPressed(Input.Keys.LEFT)) {
             LayerMaskingEffect effect = this.layerEffects[CURRENT_EFFECT_ID];
-            if(effect != null)
+            if (effect != null)
                 effect.moveOffsetByPixels(-192.0f * delta, 0.0f);
         }
         if (isKeyPressed(Input.Keys.RIGHT)) {
             LayerMaskingEffect effect = this.layerEffects[CURRENT_EFFECT_ID];
-            if(effect != null)
+            if (effect != null)
                 effect.moveOffsetByPixels(192.0f * delta, 0.0f);
         }
         if (isKeyPressed(Input.Keys.UP)) {
             LayerMaskingEffect effect = this.layerEffects[CURRENT_EFFECT_ID];
-            if(effect != null)
+            if (effect != null)
                 effect.moveOffsetByPixels(0.0f, -192.0f * delta);
         }
         if (isKeyPressed(Input.Keys.DOWN)) {
             LayerMaskingEffect effect = this.layerEffects[CURRENT_EFFECT_ID];
-            if(effect != null)
-            effect.moveOffsetByPixels(0.0f, 192.0f * delta);
+            if (effect != null)
+                effect.moveOffsetByPixels(0.0f, 192.0f * delta);
         }
 
         {
             float _speed = 100.0f;
             if (isKeyPressed(Input.Keys.W)) {
                 LayerMaskingEffect effect = this.layerEffects[CURRENT_EFFECT_ID];
-                if (effect.getLayerInfoArray().size > SELECTED_LAYER_ID)
-                    effect.get(SELECTED_LAYER_ID).position.y += _speed * delta;
+                if (effect != null) {
+                    if (effect.getLayerInfoArray().size > SELECTED_LAYER_ID)
+                        effect.get(SELECTED_LAYER_ID).position.y += _speed * delta;
+                }
             }
             if (isKeyPressed(Input.Keys.S)) {
                 LayerMaskingEffect effect = this.layerEffects[CURRENT_EFFECT_ID];
-                if (effect.getLayerInfoArray().size > SELECTED_LAYER_ID)
-                    effect.get(SELECTED_LAYER_ID).position.y -= _speed * delta;
+                if (effect != null) {
+                    if (effect.getLayerInfoArray().size > SELECTED_LAYER_ID)
+                        effect.get(SELECTED_LAYER_ID).position.y -= _speed * delta;
+                }
             }
             if (isKeyPressed(Input.Keys.A)) {
                 LayerMaskingEffect effect = this.layerEffects[CURRENT_EFFECT_ID];
-                if (effect.getLayerInfoArray().size > SELECTED_LAYER_ID)
-                    effect.get(SELECTED_LAYER_ID).position.x -= _speed * delta;
+                if (effect != null) {
+                    if (effect.getLayerInfoArray().size > SELECTED_LAYER_ID)
+                        effect.get(SELECTED_LAYER_ID).position.x -= _speed * delta;
+                }
             }
             if (isKeyPressed(Input.Keys.D)) {
                 LayerMaskingEffect effect = this.layerEffects[CURRENT_EFFECT_ID];
-                if (effect.getLayerInfoArray().size > SELECTED_LAYER_ID)
-                    effect.get(SELECTED_LAYER_ID).position.x += _speed * delta;
+                if (effect != null) {
+                    if (effect.getLayerInfoArray().size > SELECTED_LAYER_ID)
+                        effect.get(SELECTED_LAYER_ID).position.x += _speed * delta;
+                }
             }
         }
     } // void render()
@@ -678,18 +686,27 @@ public class MyGdxLayersMaskingEffect extends ApplicationAdapter implements Inpu
 
     //-------------------------------------------------------------------------
 
+    boolean wasDragged = false;
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        wasDragged = false;
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if(!wasDragged)
+            nextLayerEffect();
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        wasDragged = true;
+        LayerMaskingEffect effect = this.layerEffects[CURRENT_EFFECT_ID];
+        if (effect != null)
+            effect.moveOffsetByPixels(Gdx.input.getDeltaX(pointer), Gdx.input.getDeltaY(pointer));
         return false;
     }
 

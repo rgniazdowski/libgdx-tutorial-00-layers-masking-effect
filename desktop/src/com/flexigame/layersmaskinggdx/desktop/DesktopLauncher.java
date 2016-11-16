@@ -7,8 +7,8 @@ import com.flexigame.layersmaskinggdx.MyGdxLayersMaskingEffect;
 public class DesktopLauncher {
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = 576;
-        config.height = 1024;
+        config.width = 506;
+        config.height = 900;
         config.title = "Layers Masking Effect X - flexigame.com - Technical Blog";
         new LwjglApplication(new MyGdxLayersMaskingEffect(), config);
     }
